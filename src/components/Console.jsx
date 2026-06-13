@@ -18,12 +18,13 @@ function toTransform(rect) {
   return `translate(${rect.x}px, ${rect.y}px) scale(${rect.width / vw}, ${rect.height / vh})`
 }
 
-export default function Console({ project, originRect, transactions, totals, onAddTx, onDeleteTx, onBack }) {
+export default function Console({ project, originRect, transactions, totals, onAddTx, onDeleteTx, onDeleteProject, onBack }) {
   const [concept, setConcept] = useState('')
   const [amount, setAmount] = useState('')
   const [kind, setKind] = useState('in')
   const [date, setDate] = useState(today())
   const [ai, setAi] = useState({ open: false, loading: false, title: '', html: '' })
+  const [confirmDel, setConfirmDel] = useState(false)
 
   // Chat con el agente
   const [chat, setChat] = useState([]) // [{ role:'user'|'assistant', content }]
@@ -244,6 +245,20 @@ export default function Console({ project, originRect, transactions, totals, onA
             )}
           </div>
         )}
+
+        <div className="danger-zone">
+          {!confirmDel ? (
+            <button className="btn danger" onClick={() => setConfirmDel(true)}>Eliminar apartado</button>
+          ) : (
+            <div className="confirm-del">
+              <span className="cd-text">¿Eliminar «{project.name}» y todos sus movimientos?</span>
+              <div className="cd-actions">
+                <button className="btn danger" onClick={() => onDeleteProject(project.id)}>Sí, eliminar</button>
+                <button className="btn ghost" onClick={() => setConfirmDel(false)}>Cancelar</button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

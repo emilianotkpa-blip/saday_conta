@@ -90,7 +90,6 @@ export default function App() {
         grandTotal={grandTotal}
         onOpen={handleOpen}
         onNew={() => setModal(true)}
-        onDelete={deleteProject}
       />
 
       {openProject && (
@@ -102,6 +101,7 @@ export default function App() {
           totals={totalsOf(openId)}
           onAddTx={addTx}
           onDeleteTx={deleteTx}
+          onDeleteProject={deleteProject}
           onBack={handleBack}
         />
       )}

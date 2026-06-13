@@ -82,9 +82,6 @@ body{
 .orb .pbal.pos{color:var(--up)} .orb .pbal.neg{color:var(--down)}
 .orb .arrow{position:absolute;right:16px;bottom:16px;color:var(--muted-2);transition:color .3s,transform .3s;font-size:15px}
 .orb:hover .arrow{color:var(--rose);transform:scale(1.2)}
-.orb .orb-del{position:absolute;top:10px;right:12px;z-index:3;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;color:var(--ink);font-size:13px;line-height:1;cursor:pointer;opacity:.85;background:rgba(13,4,10,.55);border:1px solid var(--line);transition:opacity .2s,color .2s,background .2s,transform .2s}
-.orb:hover .orb-del{opacity:1}
-.orb .orb-del:hover{opacity:1;color:#fff;background:var(--down);border-color:var(--down);transform:scale(1.1)}
 .orb.add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);border-style:dashed;min-height:148px}
 .orb.add:hover{color:var(--rose);border-color:rgba(255,107,157,.45)}
 .orb.add .plus{font-size:30px;font-weight:300;line-height:1}
@@ -174,6 +171,14 @@ select.kind{width:120px}
 .chat-row{display:flex;gap:10px}
 .chat-input{flex:1}
 .btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ---------- zona de borrado ---------- */
+.danger-zone{margin-top:34px;padding-top:22px;border-top:1px solid var(--line)}
+.btn.danger{background:transparent;border-color:rgba(255,122,138,.45);color:var(--down)}
+.btn.danger:hover{background:rgba(255,122,138,.12);border-color:var(--down);color:var(--down)}
+.confirm-del{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.cd-text{color:var(--muted);font-size:14px}
+.cd-actions{display:flex;gap:10px;flex-wrap:wrap}
 
 /* ---------- modal ---------- */
 .modal{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:rgba(10,4,8,.72);backdrop-filter:blur(4px);padding:20px}
