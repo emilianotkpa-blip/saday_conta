@@ -92,8 +92,7 @@ body{
 /* ---------- consola ---------- */
 .console{
   position:fixed;inset:0;z-index:20;overflow-y:auto;
-  background:radial-gradient(900px 600px at 80% -10%,rgba(255,107,157,.12),transparent 60%),var(--void);
-  backdrop-filter:blur(2px);
+  background:radial-gradient(1200px 800px at 70% -10%, #3a1226 0%, #1a0710 52%, #0a0307 100%);
   transform-origin:top left;
   transition:transform .42s cubic-bezier(.2,.8,.2,1),opacity .42s cubic-bezier(.2,.8,.2,1);
 }
@@ -104,7 +103,7 @@ body{
   100%{clip-path:circle(120% at 50% 50%);opacity:0}
 }
 .warp-flash{position:fixed;inset:0;z-index:19;pointer-events:none;animation:warp-in .6s cubic-bezier(.4,0,.2,1) forwards}
-.console-inner{max-width:1000px;margin:0 auto;padding:30px 22px 90px;will-change:transform}
+.console-inner{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:30px 22px 90px;will-change:transform}
 .back{display:inline-flex;align-items:center;gap:8px;background:none;border:none;color:var(--muted);cursor:pointer;font-family:inherit;font-size:13px;letter-spacing:.04em;padding:8px 0;transition:color .25s}
 .back:hover{color:var(--rose)}
 .c-title{display:flex;align-items:center;gap:14px;margin:10px 0 26px}

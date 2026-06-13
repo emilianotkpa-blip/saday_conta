@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import { MXN, shade, fmtDate, today, renderMarkdown } from '../lib/format.js'
 import { useParallax } from '../hooks/useParallax.js'
 import { analyzeProject, findSavings, chatWithAgent } from '../lib/chatgpt.js'
+import HeartsRain from './HeartsRain.jsx'
+import BackgroundHeart from './BackgroundHeart.jsx'
 
 const REDUCED =
   typeof window !== 'undefined' &&
@@ -117,6 +119,8 @@ export default function Console({ project, originRect, transactions, totals, onA
 
   return (
     <div className="console" style={style} onTransitionEnd={handleTransitionEnd}>
+      <HeartsRain />
+      <BackgroundHeart />
       {flash && (
         <div
           className="warp-flash"
