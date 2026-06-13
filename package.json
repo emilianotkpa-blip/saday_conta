@@ -4,11 +4,14 @@
   "version": "1.0.0",
   "description": "App de finanzas con tema romántico para Saday. Misma arquitectura que Contabilidad Estelar. Hecha con amor por Emiliano.",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "vite",
     "dev:server": "node --env-file-if-exists=.env server.js",
     "build": "vite build",
-    "start": "node --env-file-if-exists=.env server.js",
+    "start": "node server.js",
     "preview": "vite preview --host"
   },
   "dependencies": {
