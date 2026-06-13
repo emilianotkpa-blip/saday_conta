@@ -1,12 +1,27 @@
 import { MXN, shade } from '../lib/format.js'
 
-export default function ProjectOrb({ project, balance, index, onOpen }) {
+export default function ProjectOrb({ project, balance, index, onOpen, onDelete }) {
+  const handleDelete = (e) => {
+    e.stopPropagation()
+    if (window.confirm(`¿Borrar el apartado "${project.name}" y todos sus movimientos? Esto no se puede deshacer.`)) {
+      onDelete()
+    }
+  }
+
   return (
     <button
       className="orb floaty"
       style={{ animationDelay: `${index * 0.7}s` }}
       onClick={(e) => onOpen(e.currentTarget.getBoundingClientRect())}
     >
+      <span
+        className="orb-del"
+        role="button"
+        title="Borrar apartado"
+        onClick={handleDelete}
+      >
+        ✕
+      </span>
       <span
         className="planet"
         style={{

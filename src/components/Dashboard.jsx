@@ -4,7 +4,7 @@ import { MXN } from '../lib/format.js'
 import { useParallax } from '../hooks/useParallax.js'
 import ProjectOrb from './ProjectOrb.jsx'
 
-export default function Dashboard({ projects, totalsOf, grandTotal, onOpen, onNew }) {
+export default function Dashboard({ projects, totalsOf, grandTotal, onOpen, onNew, onDelete }) {
   const shell = useRef(null)
   useParallax([{ el: shell, factor: 10 }])
 
@@ -42,6 +42,7 @@ export default function Dashboard({ projects, totalsOf, grandTotal, onOpen, onNe
             balance={totalsOf(p.id).bal}
             index={i}
             onOpen={(rect) => onOpen(p.id, rect)}
+            onDelete={() => onDelete(p.id)}
           />
         ))}
         <button className="orb add" onClick={onNew}>

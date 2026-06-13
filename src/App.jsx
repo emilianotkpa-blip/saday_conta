@@ -70,6 +70,15 @@ export default function App() {
     setModal(false)
   }
 
+  const deleteProject = (id) => {
+    setState((s) => ({
+      ...s,
+      projects: s.projects.filter((p) => p.id !== id),
+      tx: s.tx.filter((t) => t.pid !== id),
+    }))
+    if (openId === id) setOpenId(null)
+  }
+
   return (
     <>
       <HeartsRain />
@@ -81,6 +90,7 @@ export default function App() {
         grandTotal={grandTotal}
         onOpen={handleOpen}
         onNew={() => setModal(true)}
+        onDelete={deleteProject}
       />
 
       {openProject && (
