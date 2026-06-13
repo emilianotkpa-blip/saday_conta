@@ -1,0 +1,88 @@
+{
+  "name": "Para Saday — ChatGPT",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "para-saday-gpt",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "webhook-node",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "para-saday-gpt"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Construye el prompt y el body para la API de OpenAI segun la accion.\nconst b = $input.first().json.body || $input.first().json;\nconst action = b.action;\nlet prompt = '';\nlet useWeb = false;\n\nif (action === 'ahorro') {\n  useWeb = true;\n  const capital = b.capital ?? 0;\n  prompt = `Busca en la web opciones ACTUALES en Mexico (anio en curso) para hacer rendir o ahorrar dinero con mayores rendimientos, para un capital aproximado de ${capital} MXN.\\nConsidera: CETES / cetesdirecto, cuentas y fintech de alto rendimiento (Nu, Klar, Stori, Mercado Pago, Hey Banco, Finsus, etc.) y pagares bancarios.\\nPara cada opcion dame, con vinetas: nombre, rendimiento anual aproximado (tasa), nivel de riesgo y liquidez. Cierra con una recomendacion breve segun el monto.\\nResponde en espanol mexicano, usa **negritas** para nombres y tasas, e incluye de donde sale el dato.`;\n} else {\n  const p = b.project || {};\n  const t = b.totals || {};\n  const movs = (b.movements || []).join('\\n');\n  prompt = `Eres un asesor financiero practico que habla espanol mexicano claro y directo, sin tecnicismos. Analiza este proyecto/negocio.\\n\\nPROYECTO: ${p.name || 'Sin nombre'} (${p.meta || 'sin descripcion'})\\nIngresos totales: ${t.in ?? 0} MXN\\nEgresos totales: ${t.out ?? 0} MXN\\nBalance: ${t.bal ?? 0} MXN\\n\\nMovimientos:\\n${movs || '(sin movimientos)'}\\n\\nDame, con vinetas cortas y concretas:\\n1. Que esta bien.\\n2. Que esta mal o representa un riesgo.\\n3. 2-3 recomendaciones especificas para ahorrar o mejorar el flujo de dinero.\\nSe breve y directo. Usa **negritas** para lo importante. No inventes datos que no te di.`;\n}\n\nconst requestBody = {\n  model: useWeb ? 'gpt-4o-search-preview' : 'gpt-4o',\n  max_tokens: 2000,\n  messages: [{ role: 'user', content: prompt }],\n};\n\nreturn [{ json: { requestBody } }];"
+      },
+      "id": "build-node",
+      "name": "Construir prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.OPENAI_API_KEY }}" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.requestBody) }}",
+        "options": {}
+      },
+      "id": "http-node",
+      "name": "OpenAI API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extrae el texto de la respuesta de OpenAI.\nconst data = $input.first().json;\nlet text = '';\nif (Array.isArray(data.choices)) {\n  text = data.choices.map((c) => (c.message && c.message.content) || '').join('\\n\\n');\n}\nreturn [{ json: { text: text || 'Sin respuesta.' } }];"
+      },
+      "id": "extract-node",
+      "name": "Extraer texto",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"text\": $json.text } }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" }
+            ]
+          }
+        }
+      },
+      "id": "respond-node",
+      "name": "Responder",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1120, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{ "node": "Construir prompt", "type": "main", "index": 0 }]] },
+    "Construir prompt": { "main": [[{ "node": "OpenAI API", "type": "main", "index": 0 }]] },
+    "OpenAI API": { "main": [[{ "node": "Extraer texto", "type": "main", "index": 0 }]] },
+    "Extraer texto": { "main": [[{ "node": "Responder", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}
