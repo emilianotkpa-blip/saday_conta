@@ -247,19 +247,29 @@ export default function Console({ project, originRect, transactions, totals, onA
         )}
 
         <div className="danger-zone">
-          {!confirmDel ? (
-            <button className="btn danger" onClick={() => setConfirmDel(true)}>Eliminar apartado</button>
-          ) : (
-            <div className="confirm-del">
-              <span className="cd-text">¿Eliminar «{project.name}» y todos sus movimientos?</span>
-              <div className="cd-actions">
-                <button className="btn danger" onClick={() => onDeleteProject(project.id)}>Sí, eliminar</button>
-                <button className="btn ghost" onClick={() => setConfirmDel(false)}>Cancelar</button>
-              </div>
-            </div>
-          )}
+          <button className="btn danger" onClick={() => setConfirmDel(true)}>Eliminar apartado</button>
         </div>
       </div>
+
+      {confirmDel && (
+        <div
+          className="modal open"
+          onClick={(e) => e.target.classList.contains('modal') && setConfirmDel(false)}
+        >
+          <div className="card confirm-card">
+            <div className="confirm-emoji">💔</div>
+            <h3>¿Eliminar este apartado?</h3>
+            <p className="modal-text">
+              Vas a eliminar <b>«{project.name}»</b> y todos sus movimientos.
+              Esta acción no se puede deshacer.
+            </p>
+            <div className="m-actions">
+              <button className="btn ghost" onClick={() => setConfirmDel(false)}>Cancelar</button>
+              <button className="btn danger" onClick={() => onDeleteProject(project.id)}>Sí, eliminar</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -175,10 +175,16 @@ select.kind{width:120px}
 /* ---------- zona de borrado ---------- */
 .danger-zone{margin-top:34px;padding-top:22px;border-top:1px solid var(--line)}
 .btn.danger{background:transparent;border-color:rgba(255,122,138,.45);color:var(--down)}
-.btn.danger:hover{background:rgba(255,122,138,.12);border-color:var(--down);color:var(--down)}
-.confirm-del{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.cd-text{color:var(--muted);font-size:14px}
-.cd-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn.danger:hover{background:var(--down);border-color:var(--down);color:#fff}
+
+/* modal de confirmación de borrado */
+.confirm-card{text-align:center;max-width:360px;animation:pop .28s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.confirm-emoji{font-size:38px;line-height:1;margin-bottom:6px}
+.confirm-card h3{margin:0 0 10px}
+.modal-text{color:var(--muted);font-size:14px;line-height:1.6;margin:0 0 20px}
+.modal-text b{color:var(--ink)}
+.confirm-card .m-actions{justify-content:center}
 
 /* ---------- modal ---------- */
 .modal{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:rgba(10,4,8,.72);backdrop-filter:blur(4px);padding:20px}
